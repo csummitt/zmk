@@ -114,7 +114,7 @@ int zmk_input_split_peripheral_disconnected(uint8_t reg) {
                     ({}));                                                                         \
     BUILD_ASSERT(DT_INST_NODE_HAS_PROP(n, device),                                                 \
                  "Peripheral input splits need an `input` property set");                          \
-    void split_input_handler_##n(struct input_event *evt) {                                        \
+    void split_input_handler_##n(struct input_event *evt, void *user_data) {                       \
         for (size_t i = 0; i < ARRAY_SIZE(processors_##n); i++) {                                  \
             int ret = zmk_input_processor_handle_event(processors_##n[i].dev, evt,                 \
                                                        processors_##n[i].param1,                   \
@@ -134,7 +134,7 @@ int zmk_input_split_peripheral_disconnected(uint8_t reg) {
                      }}};                                                                          \
         zmk_split_peripheral_report_event(&ev);                                                    \
     }                                                                                              \
-    INPUT_CALLBACK_DEFINE(DEVICE_DT_GET(DT_INST_PHANDLE(n, device)), split_input_handler_##n);
+    INPUT_CALLBACK_DEFINE(DEVICE_DT_GET(DT_INST_PHANDLE(n, device)), split_input_handler_##n, NULL);
 
 #endif
 
